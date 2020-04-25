@@ -16,13 +16,9 @@ video::-webkit-media-controls {
 .Grid {
   width: 100%;
   height: 100%;
-  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-}
-
-.VideoWrapper {
 }
 
 .Video {
@@ -64,6 +60,7 @@ video::-webkit-media-controls {
   justify-content: flex-end;
   width: 100%;
   background-color: #333333;
+  overflow-x: scroll;
 }
 
 .Input {
@@ -83,4 +80,11 @@ video::-webkit-media-controls {
   color: #fff;
   cursor: pointer;
   outline: none;
+}
+
+.VolumeMeter {
+  position: absolute;
+  width: 20px;
+  border: 1px solid #fff;
+  background-color: #00ff00;
 }

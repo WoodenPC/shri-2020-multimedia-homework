@@ -3,6 +3,8 @@ class Video {
     this.root = root;
     this.video = video;
     this.canvas = root.querySelector('canvas');
+    this.volumeLevel = 0;
+    this.audioContext = null;
   }
 
   updateCanvas = () => {
@@ -11,6 +13,8 @@ class Video {
     const update = () => {
         if (this.video && !this.video.paused && !this.video.ended) {
             context.drawImage(this.video, 0, 0, width, height);
+            context.fillStyle = 'green';
+            context.fillRect(0, 0, 10, this.volumeLevel);
         }
         requestAnimationFrame(update);
     }
@@ -39,6 +43,8 @@ class Video {
     const btnAllCameras = this.root.querySelector('.BtnAllCameras');
     const inputBrightness = this.root.querySelector('.Input-Brightness');
     const inputContrast = this.root.querySelector('.Input-Contrast');
+    const playButton = this.root.querySelector('.Button-Play');
+    const pauseButton = this.root.querySelector('.Button-Pause');
     this.recalculateStyles(this.root);
     this.canvas.addEventListener('click', () => {
       this.root.classList.add('Video_fullscreen');
@@ -62,6 +68,40 @@ class Video {
             const ctx = this.canvas.getContext('2d');
             ctx.filter = `contrast(${e.target.value})`;
         })
+    }
+
+    if (playButton !== null) {
+      playButton.addEventListener('click', () => {
+        this.video.play();
+        if (this.audioContext === null) {
+          this.createAudioContext();
+        }
+      });
+    }
+
+    if (pauseButton !== null) {
+      pauseButton.addEventListener('click', () => {
+        this.video.pause();
+      });
+    }
+  }
+
+  createAudioContext = () => {
+    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = this.audioContext .createAnalyser();
+    analyser.smoothingTimeConstant = 0.3;
+    analyser.fftSize = 32;
+    const source = this.audioContext .createMediaElementSource(this.video);
+    const processor = this.audioContext.createScriptProcessor(512, 2, 1);
+    source.connect(analyser);
+    analyser.connect(processor);
+    source.connect(this.audioContext .destination);
+    processor.connect(this.audioContext .destination);
+    processor.onaudioprocess = (e) => {
+      const buffer = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(buffer);
+      const average = this.getAverageVolume(buffer);
+      this.volumeLevel = average;
     }
   }
 }

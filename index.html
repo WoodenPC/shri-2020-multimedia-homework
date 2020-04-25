@@ -14,8 +14,8 @@
         <div class="Video">
             <canvas id='video-1' class="Video-Box"></canvas>
             <div class="Video-Panel">
-                <button class="Button">Играть</button>
-                <button class="Button">Пауза</button>
+                <button class="Button Button-Play">Играть</button>
+                <button class="Button Button-Pause">Пауза</button>
                 <label class="Input Input-Brightness">Яркость<input value="0" type="range" min="0" max="100"></label>
                 <label class="Input Input-Contrast">Контрастность<input value="1" type="range" min="0" max="100"></label>
                 <button class="Button BtnAllCameras">Все камеры</button>
@@ -26,6 +26,8 @@
         <div class="Video">
             <canvas id='video-2' class="Video-Box"></canvas>
             <div class="Video-Panel">
+                <button class="Button Button-Play">Играть</button>
+                <button class="Button Button-Pause">Пауза</button>
                 <label class="Input Input-Brightness">Яркость<input value="0" type="range" min="0" max="100"></label>
                 <label class="Input Input-Contrast">Контрастность<input value="1" type="range" min="0" max="100"></label>
                 <button class="Button BtnAllCameras">Все камеры</button>
@@ -36,6 +38,8 @@
         <div class="Video">
             <canvas id='video-3' class="Video-Box"></canvas>
             <div class="Video-Panel">
+                <button class="Button Button-Play">Играть</button>
+                <button class="Button Button-Pause">Пауза</button>
                 <label class="Input Input-Brightness">Яркость<input value="0" type="range" min="0" max="100"></label>
                 <label class="Input Input-Contrast">Контрастность<input value="1" type="range" min="0" max="100"></label>
                 <button class="Button BtnAllCameras">Все камеры</button>
@@ -46,6 +50,8 @@
         <div class="Video">
             <canvas id='video-4' class="Video-Box"></canvas>
             <div class="Video-Panel">
+                <button class="Button Button-Play">Играть</button>
+                <button class="Button Button-Pause">Пауза</button>
                 <label class="Input Input-Brightness">Яркость<input value="0" type="range" min="0" max="100"></label>
                 <label class="Input Input-Contrast">Контрастность<input value="1" type="range" min="0" max="100"></label>
                 <button class="Button BtnAllCameras">Все камеры</button>
@@ -59,88 +65,10 @@
         const video = document.createElement('video');
         video.autoplay = false;
         video.loop = true;
+        video.muted = false;
         initVideo(video, url);
         return video;
     }
-
-    // let gain = null;
-    // function updateCanvas(canvas, video) {
-    //     const context = canvas.getContext('2d');
-    //     function update() {
-    //         if (video && !video.paused && !video.ended) {
-    //             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    //         }
-    //         requestAnimationFrame(update);
-    //     }
-    //     update();
-    // }
-
-    // function recalculateStyles(elem) {
-    //     const rect = elem.getBoundingClientRect();
-    //     elem.style.width = `${rect.width}px`;
-    //     elem.style.height = `${rect.height}px`;
-    //     elem.style.top = `${rect.top}px`;
-    //     elem.style.left = `${rect.left}px`;
-    // }
-
-    // function getAverageVolume(buffer) {
-    //     let sum = 0;
-    //     let len = buffer.length;
-    //     for (let i = 0; i < len; i++) {
-    //         sum += buffer[i];
-    //     }
-
-    //     return sum / len;
-    // }
-
-    // const videos = document.querySelectorAll('.Video');
-    // for (let i = 0; i < videos.length; i++) {
-    //     const videoElem = videos[i];
-    //     const canvas = videoElem.querySelector('canvas');
-    //     const btnAllCameras = videoElem.querySelector('.BtnAllCameras');
-    //     const inputBrightness = videoElem.querySelector('.Input-Brightness');
-    //     const inputContrast = videoElem.querySelector('.Input-Contrast');
-    //     recalculateStyles(videoElem);
-    //     canvas.addEventListener('click', () => {
-    //         videoElem.classList.add('Video_fullscreen');
-    //     });
-
-    //     if (btnAllCameras !== null) {
-    //         btnAllCameras.addEventListener('click', () => {
-    //             videoElem.classList.remove('Video_fullscreen');
-    //         });
-    //     }
-
-    //     if (inputBrightness !== null) {
-    //         inputBrightness.addEventListener('change', (e) => {
-    //             const ctx = canvas.getContext('2d');
-    //             ctx.filter = `brightness(${e.target.value})`;
-    //         });
-    //     }
-
-    //     if (inputContrast !== null) {
-    //         inputContrast.addEventListener('change', (e) => {
-    //             const ctx = canvas.getContext('2d');
-    //             ctx.filter = `contrast(${e.target.value})`;
-    //         })
-    //     }
-    // };
-
-
-    // const video1 = createVideoElem('http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fsosed%2Fmaster.m3u8');
-    // const video2 = createVideoElem('http://localhost:9191/live?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fstairs%2Fmaster.m3u8');
-    // const video3 = createVideoElem('http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fdog%2Fmaster.m3u8');
-    // const video4 = createVideoElem('http://localhost:9191/live?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fstreet%2Fmaster.m3u8');
-
-    // const canvas1 = document.getElementById('video-1');
-    // const canvas2 = document.getElementById('video-2');
-    // const canvas3 = document.getElementById('video-3');
-    // const canvas4 = document.getElementById('video-4');
-
-    // //updateCanvas(canvas1, video1);
-    // // updateCanvas(canvas2, video2);
-    // // updateCanvas(canvas3, video3);
-    // // updateCanvas(canvas4, video4);
 
     // canvas1.addEventListener('click', () => {
     //     const context = new (window.AudioContext || window.webkitAudioContext)();
@@ -168,7 +96,6 @@
         'http://localhost:9191/master?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fdog%2Fmaster.m3u8',
         'http://localhost:9191/live?url=http%3A%2F%2Flocalhost%3A3102%2Fstreams%2Fstreet%2Fmaster.m3u8',
     ];
-
 
     const videos = document.querySelectorAll('.Video');
     for (let i = 0; i < videos.length; i++) {
