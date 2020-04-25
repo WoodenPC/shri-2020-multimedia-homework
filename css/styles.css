@@ -1,0 +1,86 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+video::-webkit-media-controls {
+  display:none !important;
+}
+
+.Grid {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.VideoWrapper {
+}
+
+.Video {
+  display: inline-block;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  transition: all 0.25s ease;
+  -webkit-transition: all .25s ease;
+  -moz-transition: all .25s ease;
+  -o-transition: all .25s ease;
+}
+
+.Video_fullscreen {
+  position: fixed;
+  background-color: #fff;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 100;
+}
+
+.Video_fullscreen .BtnAllCameras {
+  display: block;
+}
+
+.Video-Box {
+  width: 100%;
+  height: 100%;
+}
+
+.Video-Panel {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  background-color: #333333;
+}
+
+.Input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px;
+  background-color: #333333;
+  color: #fff;
+  font-size: 12px;
+}
+
+.Button {
+  padding: 4px;
+  border: none;
+  background-color: #333333;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
