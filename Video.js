@@ -5,31 +5,48 @@ class Video {
     this.root = root;
     this.video = video;
     this.canvas = root.querySelector('canvas');
-    this.volumeLevel = 0;
+    this.volumeLevels = 0;
     this.audioContext = null;
     this.lastImagePixelData = null;
+  }
+
+  drawDetector = (context, width, height) => {
+    if (this.lastImagePixelData === null) {
+      this.lastImagePixelData = this.getImagePixelsData(context, width, height);
+    } else {
+      const newImagePixelData = this.getImagePixelsData(context, width, height);
+      const rect = this.getImageDiffRect(this.lastImagePixelData, newImagePixelData);
+      context.strokeStyle = 'blue';
+      context.strokeRect(rect.x1, rect.y1, rect.x2 - rect.x1, rect.y2 - rect.y1);
+      this.lastImagePixelData = newImagePixelData;
+    }
+  }
+
+  drawVolumeLevels = (context, width, height) => {
+    const len = this.volumeLevels.length;
+    context.fillStyle = 'green';
+    context.strokeStyle = 'black';
+    const y = height;
+    const columnWidth = 10;
+    for (let i = 0; i < len; i ++) {
+      const x = width - 10 * i;
+      const columnHeight = -this.volumeLevels[i] / 10;
+      context.fillRect(x, y, columnWidth, columnHeight);
+      context.strokeRect(x, y, columnWidth, columnHeight);
+    }
   }
 
   updateCanvas = () => {
     const context = this.canvas.getContext('2d');
     const { width, height } = this.canvas;
     const update = () => {
-          context.clearRect(0, 0, width, height);
-          context.drawImage(this.video, 0, 0, width, height);
-          if (this.video && !this.video.paused && !this.video.ended) {
-            if (this.lastImagePixelData === null) {
-              this.lastImagePixelData = this.getImagePixelsData(context, width, height);
-            } else {
-              const newImagePixelData = this.getImagePixelsData(context, width, height);
-              const rect = this.getImageDiffRect(this.lastImagePixelData, newImagePixelData);
-              context.strokeStyle = 'blue';
-              context.strokeRect(rect.x1, rect.y1, rect.x2 - rect.x1, rect.y2 - rect.y1);
-              this.lastImagePixelData = newImagePixelData;
-            }
-          context.fillStyle = 'green';
-          context.fillRect(0, 0, 10, this.volumeLevel);
-        }
-        requestAnimationFrame(update);
+      context.clearRect(0, 0, width, height);
+      context.drawImage(this.video, 0, 0, width, height);
+      if (this.video && !this.video.paused && !this.video.ended) {
+        this.drawDetector(context, width, height);
+        this.drawVolumeLevels(context, width, height);
+      }
+      requestAnimationFrame(update);
     }
     update();
   }
@@ -104,8 +121,9 @@ class Video {
     const pixelData = imageData.data;
     let x = 0, y = 0;
     const data = [];
+    const range = width * 4;
     for (let i = 0; i < pixelData.length; i+=4) {
-      if (i % (width * 4) === 0) {
+      if (i % range === 0) {
         y++;
         x = 0;
       }
@@ -146,8 +164,8 @@ class Video {
     processor.onaudioprocess = (e) => {
       const buffer = new Uint8Array(analyser.frequencyBinCount);
       analyser.getByteFrequencyData(buffer);
-      const average = this.getAverageVolume(buffer);
-      this.volumeLevel = average;
+      // const average = this.getAverageVolume(buffer);
+      this.volumeLevels = buffer;
     }
   }
 }
